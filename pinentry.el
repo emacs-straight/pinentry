@@ -19,7 +19,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
@@ -48,8 +48,6 @@
 ;; GnuPG (2.1.5+) and Pinentry (0.9.5+).
 
 ;;; Code:
-
-(eval-when-compile (require 'cl-lib))
 
 (defgroup pinentry nil
   "The Pinentry server"
@@ -92,7 +90,7 @@ If local sockets are not supported, this is nil.")
 
 ;; These error codes are defined in libgpg-error/src/err-codes.h.in.
 (defmacro pinentry--error-code (code)
-  (logior (lsh 5 24) code))
+  (logior (ash 5 24) code))
 (defconst pinentry--error-not-implemented
   (cons (pinentry--error-code 69) "not implemented"))
 (defconst pinentry--error-cancelled
@@ -174,7 +172,7 @@ will not be shown."
       (ignore-errors
         (let (delete-by-moving-to-trash)
           (delete-file server-file)))
-      (cl-letf (((default-file-modes) ?\700))
+      (with-file-modes ?\700
         (setq pinentry--server-process
               (make-network-process
                :name "pinentry"
